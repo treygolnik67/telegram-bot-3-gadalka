@@ -4,7 +4,7 @@ import random
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 
-API_TOKEN = 'YOUR_TOKEN'
+API_TOKEN = '8224578219:AAHxTrnO4nc28QXgmEsEAqniwYi5MeTwwos'
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
@@ -69,4 +69,5 @@ if __name__ == "__main__":
         handle_update=lambda request: dp.process_update(types.Update(**request.json())),
         on_startup=lambda: print("Бот запущен"),
         on_shutdown=lambda: print("Бот остановлен")
+
     ))
