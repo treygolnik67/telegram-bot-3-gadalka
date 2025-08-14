@@ -1,10 +1,10 @@
-# bot.py — Бот-гадалка с реальной рекламой (AdFox)
+# bot.py — Основной бот
 
 import random
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 
-API_TOKEN = '8224578219:AAHxTrnO4nc28QXgmEsEAqniwYi5MeTwwos'
+API_TOKEN = 'YOUR_TOKEN'
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
@@ -58,9 +58,7 @@ async def handle_message(message: types.Message):
         await message.answer("💡 Хочешь зарабатывать? Создай свой бот — это легко и бесплатно!\n"
                              "Приходи в наш канал: @manga_gadalka — там всё объясняю!")
 
-async def main():
-    await dp.start_polling(bot)
-
+# --- Запуск ---
 if __name__ == "__main__":
     from aiogram.webhook import WebhookServer
     import asyncio
@@ -69,5 +67,4 @@ if __name__ == "__main__":
         handle_update=lambda request: dp.process_update(types.Update(**request.json())),
         on_startup=lambda: print("Бот запущен"),
         on_shutdown=lambda: print("Бот остановлен")
-
     ))
