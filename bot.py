@@ -4,7 +4,7 @@ import random
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 
-API_TOKEN = '8224578219:AAGUQyOXQ6UGLFoc-WWuauLPVmeyiG-49Lk'
+API_TOKEN = 'vk1.a.dyG2ZP7nxJ7v74Ij_xjuwtJbeh5MvCQVX6XYoVOAuM5iTKjQeUSdKIO1t_0jCQSh9MJ3M6VFXXElhmto2FW2G4nblh14HSyD9QHESn9yrl9e1k5ui-PmE6yVSuKsQ_ohzvRRWmX_fqdzAV0Du_lY-mJNGQE8Om-rxgzYoGS81_ni4aO4WnGckblnNsrSM5_8g5tpRatSAdTokxqW9dwwXA'
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
@@ -68,5 +68,6 @@ if __name__ == "__main__":
         on_startup=lambda: print("Бот запущен"),
         on_shutdown=lambda: print("Бот остановлен")
     ))
+
 
 
