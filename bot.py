@@ -1,14 +1,16 @@
-# bot.py — Основной бот
 
 import random
+import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 
-API_TOKEN = 'vk1.a.dyG2ZP7nxJ7v74Ij_xjuwtJbeh5MvCQVX6XYoVOAuM5iTKjQeUSdKIO1t_0jCQSh9MJ3M6VFXXElhmto2FW2G4nblh14HSyD9QHESn9yrl9e1k5ui-PmE6yVSuKsQ_ohzvRRWmX_fqdzAV0Du_lY-mJNGQE8Om-rxgzYoGS81_ni4aO4WnGckblnNsrSM5_8g5tpRatSAdTokxqW9dwwXA'
+# 🚨 ВАЖНО: Замени API_TOKEN на настоящий твой токен!
+API_TOKEN = 'vk1.a.dyG2ZP7nxJ7v74Ij_xjuwtJbeh5MvCQVX6XYoVOAuM5iTKjQeUSdKIO1t_0jCQSh9MJ3M6VFXXElhmto2FW2G4nblh14HSyD9QHESn9yrl9e1k5ui-PmE6yVSuKsQ_ohzvRRWmX_fqdzAV0Du_lY-mJNGQE8Om-rxgzYoGS81_ni4aO4WnGckblnNsrSM5_8g5tpRatSAdTokxqW9dwwXA'  # ← Поставь свой токен сюда!
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
+# 📜 Список предсказаний
 gadalka = [
     "Тебе повезёт сегодня!",
     "Сегодня день удачи!",
@@ -27,7 +29,7 @@ gadalka = [
     "У тебя всё получится — верь в себя!"
 ]
 
-# 📢 Реальная реклама (AdFox)
+# 📢 Реклама AdFox (исправленные URL без пробелов!)
 ads = [
     "<iframe src='https://adfox.ru/758968/1041184/iframe' width='300' height='250' frameborder='0'></iframe>",
     "<iframe src='https://adfox.ru/758968/1041185/iframe' width='300' height='250' frameborder='0'></iframe>",
@@ -35,6 +37,7 @@ ads = [
     "<iframe src='https://adfox.ru/758968/1041187/iframe' width='300' height='250' frameborder='0'></iframe>"
 ]
 
+# 🎯 Команда /start
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     ad = random.choice(ads)
@@ -42,6 +45,7 @@ async def cmd_start(message: types.Message):
                          f"{ad}\n\n"
                          f"Напиши /predict — я скажу, что будет!")
 
+# 🧙‍♂️ Команда /predict
 @dp.message(Command("predict"))
 async def predict(message: types.Message):
     phrase = random.choice(gadalka)
@@ -49,6 +53,7 @@ async def predict(message: types.Message):
     await message.answer(f"🔮 {phrase}\n\n"
                          f"{ad}")
 
+# 📝 Обработка текста (реакция на слова)
 @dp.message()
 async def handle_message(message: types.Message):
     text = message.text.lower()
@@ -58,16 +63,27 @@ async def handle_message(message: types.Message):
         await message.answer("💡 Хочешь зарабатывать? Создай свой бот — это легко и бесплатно!\n"
                              "Приходи в наш канал: @manga_gadalka — там всё объясняю!")
 
-# --- Запуск ---
+# 🛠 Запуск бота через вебхук
 if __name__ == "__main__":
     from aiogram.webhook import WebhookServer
     import asyncio
-    server = WebhookServer(host="0.0.0.0", port=int(os.environ.get("PORT", 80)))
-    asyncio.run(server.run(
-        handle_update=lambda request: dp.process_update(types.Update(**request.json())),
-        on_startup=lambda: print("Бот запущен"),
-        on_shutdown=lambda: print("Бот остановлен")
-    ))
 
+    # Получаем PORT из переменных окружения (обязательно для Render!)
+    PORT = int(os.environ.get("PORT", 80))
+
+    # Настройка сервера
+    server = WebhookServer(host="0.0.0.0", port=PORT)
+
+    # Функция для обработки входящих обновлений
+    async def handle_update(request):
+        update = types.Update(**request.json())
+        await dp.process_update(update)
+
+    # Запуск сервера
+    asyncio.run(server.run(
+        handle_update=handle_update,
+        on_startup=lambda: print("✅ Бот запущен!"),
+        on_shutdown=lambda: print("❌ Бот остановлен")
+    ))
 
 
